@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS Compiler</title>
+    <style>
+        #code {
+            width: 100%;
+            height: 150px;
+        }
+        #console {
+            width: 100%;
+            height: 150px;
+            border: 1px solid #ccc;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            background: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+    <h1>JavaScript Compiler</h1>
+    <textarea id="code" placeholder="Write your JavaScript code here..."></textarea><br>
+    <button onclick="compileCode()">Compile</button>
+    <h2>Console:</h2>
+    <pre id="console"></pre>
+
+    <script>
+        function compileCode() {
+            const code = document.getElementById('code').value;
+            const consoleElement = document.getElementById('console');
+            
+            // Clear previous output
+            consoleElement.textContent = '';
+
+            try {
+                // Redirect console.log to our console element
+                const originalConsoleLog = console.log;
+                console.log = function(message) {
+                    consoleElement.textContent += message + '\n';
+                };
+
+                // Execute the code
+                new Function(code)();
+                
+                // Restore original console.log
+                console.log = originalConsoleLog;
+            } catch (error) {
+                consoleElement.textContent = 'Error: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>
